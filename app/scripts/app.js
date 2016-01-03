@@ -21,7 +21,7 @@ angular
       events:true,
     });
 
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/dashboard/homepage');
 
     $stateProvider
       .state('dashboard', {
@@ -75,9 +75,9 @@ angular
         }
     })
       .state('dashboard.home',{
-        url:'/home',
+        url:'/homepage',
         controller: 'MainCtrl',
-        templateUrl:'views/dashboard/home.html',
+        templateUrl:'views/dashboard/homepage.html',
         resolve: {
           loadMyFiles:function($ocLazyLoad) {
             return $ocLazyLoad.load({
@@ -88,6 +88,7 @@ angular
               'scripts/directives/notifications/notifications.js',
               'scripts/directives/chat/chat.js',
               'scripts/directives/dashboard/stats/stats.js'
+
               ]
             })
           }
@@ -152,6 +153,11 @@ angular
       .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
+   })
+
+      .state('dashboard.homepage',{
+       templateUrl:'views/dashboard/homepage.html',
+       url:'/homepage'
    })
   }]);
 
