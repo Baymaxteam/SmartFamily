@@ -1,4 +1,5 @@
-## SB Admin v2.0 rewritten in AngularJS
+## Smart Family project in AngularJS, and this is merged from SB Admin v2.0
+You can refer more detail from the original auditor page.
 
 [![Join the chat at https://gitter.im/start-angular/sb-admin-angular](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/start-angular/sb-admin-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
