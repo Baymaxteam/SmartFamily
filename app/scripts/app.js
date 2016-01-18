@@ -87,7 +87,8 @@ angular
               'scripts/directives/timeline/timeline.js',
               'scripts/directives/notifications/notifications.js',
               'scripts/directives/chat/chat.js',
-              'scripts/directives/dashboard/stats/stats.js'
+              'scripts/directives/dashboard/stats/stats.js',
+              'scripts/directives/room-control/PanelController.js'
 
               ]
             })
@@ -154,11 +155,52 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
+    /**
+    new room page 0116 minghing
+    */      
+      .state('dashboard.roomLiving',{
+       templateUrl:'views/room-control/roomLiving.html',
+       url:'/roomLiving'
+       // controller:'PanelController',
+       //  resolve: {
+       //    loadMyFile:function($ocLazyLoad) {
+       //      return $ocLazyLoad.load({
+       //        name:'PanelController.js',
+       //        files:[
+       //          'bower_components/angular-chart.js/dist/angular-chart.min.js',
+       //          'bower_components/angular-chart.js/dist/angular-chart.css'
+       //        ]
+       //      }),
+       //      $ocLazyLoad.load({
+       //          name:'sbAdminApp',
+       //          files:['scripts/directives/room-control/PanelController.js']
+       //      })
+       //    }
+       //  }
 
-      .state('dashboard.homepage',{
-       templateUrl:'views/dashboard/homepage.html',
-       url:'/homepage'
    })
+
+      .state('dashboard.roomKitchen',{
+       templateUrl:'views/room-control/buttons.html',
+       url:'/roomKitchen'
+   })
+      .state('dashboard.roomBedMain',{
+       templateUrl:'views/room-control/buttons.html',
+       url:'/roomBedMain'
+   })
+      .state('dashboard.roomBedGuest',{
+       templateUrl:'views/room-control/buttons.html',
+       url:'/roomBedGuest'
+   })
+      .state('dashboard.roomBath',{
+       templateUrl:'views/room-control/buttons.html',
+       url:'/roomBath'
+   })
+      .state('dashboard.roomAdd',{
+       templateUrl:'views/room-control/buttons.html',
+       url:'/roomAdd'
+   })
+
   }]);
 
     
