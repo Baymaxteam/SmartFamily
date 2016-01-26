@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">客廳</h1>
+        <img src="/views/room-schedule/picture/LivingRoom.jpg" alt="LivingRoom" style="width:400px;height:300px;">
+        <h1></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div ng-app="myApp">
+            <div ng-controller="demoController as demo">
+                <h2 class="page-header">Loading data - managed array</h2>
+                <div class="bs-callout bs-callout-info">
+                    <h4>Overview</h4>
+                    <p>When you have the <em>entire</em> dataset available in-memory you can hand this to <code>NgTableParams</code> to manage the filtering, sorting and paging of that array</p>
+                </div>
+                <table>
+                    <td>123</td>
+                </table>
+
+                <table ng-table="demo.tableParams" class="table table-condensed table-bordered table-striped">
+                    <tr ng-repeat="row in $data">
+                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">{{row.name}}</td>
+                        <td data-title="'Age'" filter="{age: 'number'}" sortable="'age'">{{row.age}}</td>
+                        <td data-title="'Money'" filter="{money: 'number'}" sortable="'money'">{{row.money}}</td>
+                    </tr>
+                </table>
+                <div class="bs-callout bs-callout-info">
+                    <h4>Overview</h4>
+                    <p>When you have the <em>entire</em> dataset available in-memory you can hand this to <code>NgTableParams</code> to manage the filtering, sorting and paging of that array</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

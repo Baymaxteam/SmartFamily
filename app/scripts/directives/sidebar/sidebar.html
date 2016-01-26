@@ -7,8 +7,7 @@
                 <a ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li ng-class="{active: collapseVar==1}">{{dropDown}}
-                <a href="" ng-click="check(1)"><i class="fa fa-refresh fa-fw"></i> 手動控制<span
-                        class="fa arrow"></span></a>
+                <a href="" ng-click="check(1)"><i class="fa fa-refresh fa-fw"></i> 手動控制<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=1">
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.roomLiving">客廳</a>
@@ -31,8 +30,26 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li ui-sref-active="active">
-                <a ui-sref="dashboard.iControl"><i class="fa fa-tasks fa-fw"></i> 智慧控制</a>
+            <li ng-class="{active: collapseVar==5}">{{dropDown}}
+                <a href="" ng-click="check(5)"><i class="fa fa-tasks fa-fw"></i> 智慧控制<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=5">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.scheduleLiving">客廳</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.scheduleBedMain">主臥房</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.scheduleBedGuest">客房</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.scheduleBath">浴室</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.scheduleAdd">新增</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
             </li>
             <li ui-sref-active="active">
                 <a ui-sref="dashboard.modeChange"><i class="fa fa-university fa-fw"></i> 情境模式</a>
