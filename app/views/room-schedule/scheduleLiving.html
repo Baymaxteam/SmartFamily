@@ -16,9 +16,6 @@
                     <h4>Overview</h4>
                     <p>When you have the <em>entire</em> dataset available in-memory you can hand this to <code>NgTableParams</code> to manage the filtering, sorting and paging of that array</p>
                 </div>
-                <table>
-                    <td>123</td>
-                </table>
 
                 <table ng-table="demo.tableParams" class="table table-condensed table-bordered table-striped">
                     <tr ng-repeat="row in $data">
@@ -27,10 +24,6 @@
                         <td data-title="'Money'" filter="{money: 'number'}" sortable="'money'">{{row.money}}</td>
                     </tr>
                 </table>
-                <div class="bs-callout bs-callout-info">
-                    <h4>Overview</h4>
-                    <p>When you have the <em>entire</em> dataset available in-memory you can hand this to <code>NgTableParams</code> to manage the filtering, sorting and paging of that array</p>
-                </div>
             </div>
         </div>
     </div>

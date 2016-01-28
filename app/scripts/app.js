@@ -64,6 +64,10 @@ angular
                             name: 'ngTouch',
                             files: ['bower_components/angular-touch/angular-touch.js']
                         })
+                                                $ocLazyLoad.load({
+                            name: 'ngTable',
+                            files: ['bower_components/angular-touch/angular-touch.js']
+                        })
                     }
                 }
             })
