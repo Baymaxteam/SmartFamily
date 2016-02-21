@@ -262,8 +262,6 @@ function check_submitNodeData() {
 }
 
 
-
-
 function post_submitNodeData(scheduleUrl) {
     $("#btnSubmitSchedule").click(function(event) {
         var nodeSubmitScheduleUrl = scheduleUrl + submitScheduleNode[0][0] + "/";

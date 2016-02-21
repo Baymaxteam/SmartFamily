@@ -18,9 +18,6 @@ $(document).ready(function() {
 });
 
 
-
-
-
 function post_EnvControl(EnvControlCommend, EnvControlUrl) {
     $.ajax({
         url: nodeurl,
