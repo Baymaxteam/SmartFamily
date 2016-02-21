@@ -27,6 +27,9 @@ $(document).ready(function() {
     // get the nodeUrl data by RESTful and show data in NodeList
     praseJsonNodeData = get_AllNodeList(nodeUrl);
 
+    // delete schedule
+    delete_NodeSchedule(scheduleUrl);
+
     // select node for schedule
     action_SelectNode();
     // select time and date.
@@ -35,7 +38,7 @@ $(document).ready(function() {
     check_submitNodeData();
     // 上傳排程資料
     post_submitNodeData(scheduleUrl);
-   //delete_NodeSchedule(nodeUrl);
+    //delete_NodeSchedule(nodeUrl);
 
 });
 
@@ -51,7 +54,9 @@ function initInputItem() {
 function get_NodeSchedule(scheduleUrl) {
     var NodeSchedule = [];
     $.ajax({
-        url: scheduleUrl,
+         url: scheduleUrl,
+        // test 
+        // url: "schedule.json",
         dataType: "json",
         success: function(response) {
             responseJson = response;
@@ -62,8 +67,8 @@ function get_NodeSchedule(scheduleUrl) {
                 var jsonToDateString = responseJson[index].triggerTime.toString();
                 var date = new Date(jsonToDateString)
 
-                var tmp = [responseJson[index].ID.toString(), date.toLocaleString(),
-                    responseJson[index].Commend, responseJson[index].completed.toString()
+                var tmp = [responseJson[index].TaskID.toString(), responseJson[index].NodeID.toString(), date.toLocaleString(),
+                    responseJson[index].Commend.toString(), responseJson[index].completed.toString()
                 ];
                 console.log(tmp);
                 NodeSchedule.push(tmp)
@@ -72,7 +77,6 @@ function get_NodeSchedule(scheduleUrl) {
             }
             // display data
             showScheduleTable(NodeSchedule)
-            return praseJsonScheduleData;
         },
         error: function(response) {
             console.log("error");
@@ -81,13 +85,15 @@ function get_NodeSchedule(scheduleUrl) {
 
     function showScheduleTable(data) {
 
-        $('#tableScheduleView').DataTable({
+        tableSelectSchedule = $('#tableScheduleView').DataTable({
             responsive: true,
             destroy: true,
             data: data,
             pageLength: 5,
             paging: false,
             columns: [{
+                title: "任務#"
+            }, {
                 title: "ID"
             }, {
                 title: "時間"
@@ -101,11 +107,45 @@ function get_NodeSchedule(scheduleUrl) {
 }
 
 
+function delete_NodeSchedule(scheduleUrl) {
 
+    var SelectScheduleData = [];
+    //點選節點表單，選則對應節點功能
+    $('#tableScheduleView tbody').on('click', 'tr', function() {
+        // SelectNodeData = {}
+        SelectScheduleData = tableSelectSchedule.row(this).data();
+        console.log(SelectScheduleData);
 
-function delete_NodeSchedule() {
+        $('#SelectSchedule').text("刪除任務: " + SelectScheduleData[0]);
+
+    });
+
+    $('#btnDeleteSchedule').click(function(event) {
+        var PostData = '{ "TaskID" : ' + SelectScheduleData[0] + '}';
+        console.log(PostData);
+        $.ajax({
+            url: scheduleUrl,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            type: "DELETE",
+            data: PostData,
+            success: function(response) {
+                console.log(response);
+                 $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                window.location.reload();
+
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    });
 
 }
+
 
 function get_AllNodeList(nodeUrl) {
     var NodeTable = [];
@@ -126,7 +166,6 @@ function get_AllNodeList(nodeUrl) {
             }
             // display data
             showNodeTable(NodeTable)
-            return NodeTable;
         },
         error: function(response) {
             console.log("error");
@@ -174,8 +213,6 @@ function action_SelectNode() {
             $('#NodeLSwitch').show();
         } else {}
     });
-
-
 }
 
 function action_DateTime() {
@@ -248,7 +285,7 @@ function check_submitNodeData() {
             destroy: true,
             bFilter: false,
             bInfo: false,
-             paging: false,
+            paging: false,
             data: checkNodeScheduleData,
             columns: [{
                 title: "ID"

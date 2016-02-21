@@ -128,9 +128,11 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
+                                <h5 style="color:blue;">表單內選擇刪除之排程</h5>
                                 <table class="table table-striped table-bordered table-hover" id="tableScheduleView">
                                     <thead>
                                         <tr>
+                                            <th>任務#</th>
                                             <th>ID</th>
                                             <th>時間</th>
                                             <th>命令</th>
@@ -140,11 +142,13 @@
                                     <tbody>
                                         <tr class="odd gradeX">
                                             <td>1</td>
+                                            <td>1</td>
                                             <td>2016/1/19 上午8:38:15</td>
                                             <td>0</td>
                                             <td>完成</td>
                                         </tr>
                                         <tr class="even gradeC">
+                                            <td>1</td>
                                             <td>2</td>
                                             <td>2016/1/19 上午9:38:15</td>
                                             <td>0</td>
@@ -153,9 +157,10 @@
                                     </tbody>
                                 </table>
                                 <p></p>
-                                <button type="button" class="btn btn-danger" id="btnDelete  Schedule">
+                                <button type="button" class="btn btn-danger" id="btnDeleteSchedule">
                                     刪除排程
                                 </button>
+                                <h4 id="SelectSchedule"></h4>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
