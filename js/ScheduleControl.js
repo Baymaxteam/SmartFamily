@@ -35,9 +35,7 @@ $(document).ready(function() {
     check_submitNodeData();
     // 上傳排程資料
     post_submitNodeData(scheduleUrl);
-
-
-    //delete_NodeSchedule(nodeUrl);
+   //delete_NodeSchedule(nodeUrl);
 
 });
 
