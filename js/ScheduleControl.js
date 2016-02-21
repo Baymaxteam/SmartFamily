@@ -15,98 +15,27 @@ var submitScheduleNode = [
     []
 ];
 
+
+var nodeUrl = "http://192.168.31.245:8000/api/V1/node/";
+var scheduleUrl = "http://192.168.31.245:8000/api/V1/schedule/";
+
 $(document).ready(function() {
-
-    var nodeUrl = "http://192.168.31.168:8000/api/V1/node/";
-    var scheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/";
-    var SelectNodeData = [];
-
     // InitInputItem
     initInputItem();
     // get the scheduleUrl data by RESTful and show data in NodeSchedule
     praseJsonScheduleData = get_NodeSchedule(scheduleUrl);
     // get the nodeUrl data by RESTful and show data in NodeList
     praseJsonNodeData = get_AllNodeList(nodeUrl);
-    //
+
+    // select node for schedule
+    action_SelectNode();
+    // select time and date.
     action_DateTime();
-
-
-
-    //點選節點表單，選則對應節點功能
-    $('#tableNodeSelect tbody').on('click', 'tr', function() {
-        // SelectNodeData = {}
-        SelectNodeData = tableSelectNode.row(this).data();
-        //console.log(SelectNodeData);
-
-        $('#SelectNodeName').val(SelectNodeData[0]);
-        $('#SelectNodeApp').val(SelectNodeData[2]);
-
-        // 確認節點類型後，展示對應開關介面
-        if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
-            $('#NodeNSwitch').show();
-            $('#NodeLSwitch').hide();
-        } else if (SelectNodeData[1] == "L") {
-            $('#NodeNSwitch').hide();
-            $('#NodeLSwitch').show();
-        } else {}
-    });
-
     // 確認是否填完排程資料
-    $("#btnCheckSchedule").click(function(event) {
-        // 如果都填完，開啟表單
-        if ($("#SelectNodeName").val() != "" && $("#selectDateTime").val() != "") {
-            // object array
-            submitScheduleNode = [
-                []
-            ];
-            submitScheduleNode[0].push($('#SelectNodeName').val().toString());
-            submitScheduleNode[0].push($('#selectDateTime').val().toString());
-            if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
-                if ($("#NodeN1Switch").prop('checked') == true) {
-                    submitScheduleNode[0].push("1");
-                } else {
-                    submitScheduleNode[0].push("0");
-                }
-            } else if (SelectNodeData[1] == "L") {
-                var value = 0;
-                if ($("#NodeN1Switch").prop('checked') == true) {
-                    value = value + 1;
-                }
-                if ($("#NodeN2Switch").prop('checked') == true) {
-                    value = value + 2;
-                }
-                if ($("#NodeN3Switch").prop('checked') == true) {
-                    value = value + 4;
-                }
-                submitScheduleNode[0].push(value.toString());
-
-            } else {
-
-            }
-
-            console.log(submitScheduleNode);
-            showSelectScheduleTable(submitScheduleNode);
-
-        }
-    });
-    // 確認是否填完排程資料
-    $("#btnSubmitSchedule").click(function(event) {
-        var nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/" + submitScheduleNode[0][0] + "/";
-        // nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
-        console.log(nodeSubmitScheduleUrl);
-        var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
-        // example '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
-
-        sendcommend = sendcommend.replace('/', '-');
-        sendcommend = sendcommend.replace('/', '-');
-        console.log(sendcommend);
-        nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
-
-        $('html, body').animate({
-            scrollTop: 0
-        }, 'slow');
-
-    });
+    check_submitNodeData();
+    // 上傳排程資料
+    post_submitNodeData(scheduleUrl);
+   //delete_NodeSchedule(nodeUrl);
 
 });
 
@@ -133,7 +62,7 @@ function get_NodeSchedule(scheduleUrl) {
                 var jsonToDateString = responseJson[index].triggerTime.toString();
                 var date = new Date(jsonToDateString)
 
-                var tmp = [responseJson[index].NodeID.toString(), date.toLocaleString(),
+                var tmp = [responseJson[index].ID.toString(), date.toLocaleString(),
                     responseJson[index].Commend, responseJson[index].completed.toString()
                 ];
                 console.log(tmp);
@@ -144,7 +73,6 @@ function get_NodeSchedule(scheduleUrl) {
             // display data
             showScheduleTable(NodeSchedule)
             return praseJsonScheduleData;
-            NodeSchedule
         },
         error: function(response) {
             console.log("error");
@@ -158,6 +86,7 @@ function get_NodeSchedule(scheduleUrl) {
             destroy: true,
             data: data,
             pageLength: 5,
+            paging: false,
             columns: [{
                 title: "ID"
             }, {
@@ -171,8 +100,11 @@ function get_NodeSchedule(scheduleUrl) {
     }
 }
 
-function delete_NodeSchedule(){
-    
+
+
+
+function delete_NodeSchedule() {
+
 }
 
 function get_AllNodeList(nodeUrl) {
@@ -220,25 +152,30 @@ function get_AllNodeList(nodeUrl) {
                 title: "電流"
             }]
         });
-
-        $('#tableCurrentStatus').DataTable({
-            responsive: true,
-            data: praseJsonNodeData,
-            columns: [{
-                title: "ID"
-            }, {
-                title: "類型"
-            }, {
-                title: "應用"
-            }, {
-                title: "位置"
-            }, {
-                title: "狀態"
-            }, {
-                title: "耗電量(Whr)"
-            }]
-        });
     }
+}
+
+function action_SelectNode() {
+    //點選節點表單，選則對應節點功能
+    $('#tableNodeSelect tbody').on('click', 'tr', function() {
+        // SelectNodeData = {}
+        SelectNodeData = tableSelectNode.row(this).data();
+        //console.log(SelectNodeData);
+
+        $('#SelectNodeName').val(SelectNodeData[0]);
+        $('#SelectNodeApp').val(SelectNodeData[2]);
+
+        // 確認節點類型後，展示對應開關介面
+        if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
+            $('#NodeNSwitch').show();
+            $('#NodeLSwitch').hide();
+        } else if (SelectNodeData[1] == "L") {
+            $('#NodeNSwitch').hide();
+            $('#NodeLSwitch').show();
+        } else {}
+    });
+
+
 }
 
 function action_DateTime() {
@@ -257,47 +194,108 @@ function action_DateTime() {
     });
 
     function checkScheduleTimeDate() {
-    if ($("#datepicker").val() != "" && $("#timepicker").val() != "") {
-        var tmp;
-        tmp = $("#datepicker").val() + " " + $("#timepicker").val();
-        $("#selectDateTime").val(tmp);
+        if ($("#datepicker").val() != "" && $("#timepicker").val() != "") {
+            var tmp;
+            tmp = $("#datepicker").val() + " " + $("#timepicker").val();
+            $("#selectDateTime").val(tmp);
+        }
     }
 }
 
 
-function showSelectScheduleTable(checkNodeScheduleData) {
+function check_submitNodeData() {
+    $("#btnCheckSchedule").click(function(event) {
+        // 如果都填完，開啟表單
+        if ($("#SelectNodeName").val() != "" && $("#selectDateTime").val() != "") {
+            // object array
+            submitScheduleNode = [
+                []
+            ];
+            submitScheduleNode[0].push($('#SelectNodeName').val().toString());
+            submitScheduleNode[0].push($('#selectDateTime').val().toString());
+            if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
+                if ($("#NodeN1Switch").prop('checked') == true) {
+                    submitScheduleNode[0].push("1");
+                } else {
+                    submitScheduleNode[0].push("0");
+                }
+            } else if (SelectNodeData[1] == "L") {
+                var value = 0;
+                if ($("#NodeL1Switch").prop('checked') == true) {
+                    value = value + 1;
+                }
+                if ($("#NodeL2Switch").prop('checked') == true) {
+                    value = value + 2;
+                }
+                if ($("#NodeL3Switch").prop('checked') == true) {
+                    value = value + 4;
+                }
+                submitScheduleNode[0].push(value.toString());
 
-    tableSelectSchedule = $('#tableScheduleSetting').DataTable({
-        responsive: true,
-        destroy: true,
-        data: checkNodeScheduleData,
+            } else {
 
-        columns: [{
-            title: "ID"
-        }, {
-            title: "時間"
-        }, {
-            title: "命令"
-        }]
-    });
-}
+            }
 
+            console.log(submitScheduleNode);
+            showSelectScheduleTable(submitScheduleNode);
 
-
-function nodeSubmitSchedule(inputSchedule, nodeurl) {
-    $.ajax({
-        url: nodeurl,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        type: "PUT",
-        data: inputSchedule,
-        success: function(response) {
-            console.log(response);
-        },
-        error: function(response) {
-            console.log("error");
         }
     });
 
+    function showSelectScheduleTable(checkNodeScheduleData) {
+        tableSelectSchedule = $('#tableScheduleSetting').DataTable({
+            responsive: true,
+            destroy: true,
+            bFilter: false,
+            bInfo: false,
+             paging: false,
+            data: checkNodeScheduleData,
+            columns: [{
+                title: "ID"
+            }, {
+                title: "時間"
+            }, {
+                title: "命令"
+            }]
+        });
+    }
+}
+
+
+function post_submitNodeData(scheduleUrl) {
+    $("#btnSubmitSchedule").click(function(event) {
+        var nodeSubmitScheduleUrl = scheduleUrl + submitScheduleNode[0][0] + "/";
+        // nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
+        console.log(nodeSubmitScheduleUrl);
+        var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
+        // example '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
+
+        sendcommend = sendcommend.replace('/', '-');
+        sendcommend = sendcommend.replace('/', '-');
+        console.log(sendcommend);
+        nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
+
+    });
+
+    function nodeSubmitSchedule(inputSchedule, nodeurl) {
+        $.ajax({
+            url: nodeurl,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            type: "PUT",
+            data: inputSchedule,
+            success: function(response) {
+                console.log(response);
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                window.location.reload();
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+
+    }
 }
