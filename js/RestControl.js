@@ -1,13 +1,62 @@
 //Flot Line Chart
 var responseJson = [];
 
+var Nnodelist = [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')];
+var Lnodelist = [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')];
+var NnodeID = ["1", "2", "3"];
+var LnodeID = ["7"];
+var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
+
 $(document).ready(function() {
     console.log("document ready");
-    var responseJson = [];
     // 按下按鍵，REST GET要資料，檢查開關狀態
-    // N type
-    $('#btnMainLight').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/1/"
+    // var nodeUrL = nodeUrlBase + NnodeID[0] + "/";
+    // console.log(nodeUrL);
+    // $.ajax({
+    //     url: nodeUrL,
+    //     dataType: "json",
+    //     success: function(response) {
+    //         responseJson = response;
+    //         console.log(responseJson);
+    //         if (responseJson.State == "0"){
+    //             Nnodelist[0].bootstrapToggle('off')
+    //         }else{
+    //             Nnodelist[0].bootstrapToggle('on')
+    //         }
+
+    //     },
+    //     error: function(response) {
+    //         console.log("error");
+    //     }
+    // });
+    for (var i = 0; i < NnodeID.length; i++) {
+        var nodeUrL = nodeUrlBase + NnodeID[i] + "/";
+        console.log(nodeUrL);
+        $.ajax({
+            url: nodeUrL,
+            dataType: "json",
+            success: function(response) {
+                responseJson = response;
+                console.log(responseJson);
+
+                // 再用for寫
+                if (responseJson.State == "0") {
+                    Nnodelist[i].bootstrapToggle('off');
+                } else {
+                    Nnodelist[i].bootstrapToggle('on');
+                }
+
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    }
+
+
+
+    $('#btnMainLight').change(function(event) {
+        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/1/";
         $.ajax({
             url: nodeUrl,
             dataType: "json",
@@ -23,7 +72,7 @@ $(document).ready(function() {
     });
 
     $('#btnWallLight').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/2/"
+        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/2/";
         $.ajax({
             url: nodeUrl,
             dataType: "json",
@@ -39,7 +88,7 @@ $(document).ready(function() {
     });
 
     $('#btnFan').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/3/"
+        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/3/";
         $.ajax({
             url: nodeUrl,
             dataType: "json",
