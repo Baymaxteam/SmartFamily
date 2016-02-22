@@ -1,7 +1,9 @@
 //Flot Line Chart
+ var envUrl = "http://192.168.31.215:8000/api/bill/house/month/"
+
 $(document).ready(function() {
     console.log("document ready");
-    var envUrl = "http://192.168.1.215:8000/api/V1/node/"
+   
 
     $("btnEnvOutDoor").click(function(event) {
         /* Act on the event */

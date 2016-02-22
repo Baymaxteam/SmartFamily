@@ -1,10 +1,27 @@
 //Flot Line Chart
 var responseJson = [];
 
-var Nnodelist = [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')];
-var Lnodelist = [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')];
-var NnodeID = ["1", "2", "3"];
-var LnodeID = ["7"];
+var Obj_Nnode = {
+    DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
+    ID: ["1", "2", "3"],
+    State: ["0", "0", "0"]
+}
+
+var Obj_Lnode = {
+    DOMList: [[$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')]],
+    ID: ["7"],
+    State: [["0", "0", "1"]]
+}
+
+var Obj_IRnode = {
+    DOMList: [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')],
+    ID: ["9"]
+}
+
+// var Nnodelist = [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')];
+// var Lnodelist = [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')];
+// var NnodeID = ["1", "2", "3"];
+// var LnodeID = ["7"];
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 $(document).ready(function() {
@@ -29,23 +46,24 @@ $(document).ready(function() {
     //         console.log("error");
     //     }
     // });
-    for (var i = 0; i < NnodeID.length; i++) {
-        var nodeUrL = nodeUrlBase + NnodeID[i] + "/";
+
+    // 一次得到所有狀態的resufl
+    for (var i = 0; i < Obj_Nnode.ID.length; i++) {
+        var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
         console.log(nodeUrL);
         $.ajax({
             url: nodeUrL,
             dataType: "json",
             success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
+                console.log(response);
+                var index = Obj_Nnode.ID.indexOf(response.ID.toString());
+                Obj_Nnode.State[index] = response.State.toString();
 
-                // 再用for寫
-                if (responseJson.State == "0") {
-                    Nnodelist[i].bootstrapToggle('off');
+                if (Obj_Nnode.State[index].toString() == "0") {
+                    Obj_Nnode.DOMList[index].bootstrapToggle('off');
                 } else {
-                    Nnodelist[i].bootstrapToggle('on');
+                    Obj_Nnode.DOMList[index].bootstrapToggle('on');
                 }
-
             },
             error: function(response) {
                 console.log("error");
@@ -54,16 +72,44 @@ $(document).ready(function() {
     }
 
 
+    for (var i = 0; i < Obj_Lnode.ID.length; i++) {
+        var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
+        console.log(nodeUrL);
+        $.ajax({
+            url: nodeUrL,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
 
-    $('#btnMainLight').change(function(event) {
+                var index = Obj_Lnode.ID.indexOf(response.ID.toString());
+                Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
+                // console.log(index);
+                // console.log(Obj_Lnode.State[index]);
+                 for (var i = 0; i < Obj_Lnode.State.length; i++)
+                if (Obj_Lnode.State[index][i].toString() == "0") {
+                    Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
+                } else {
+                    Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
+                }
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    }
+
+    //
+
+
+
+    $('#btnMainLight').click(function(event) {
         var nodeUrl = "http://192.168.31.245:8000/api/V1/node/1/";
         $.ajax({
             url: nodeUrl,
             dataType: "json",
             success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeNState(responseJson.State, nodeUrl);
+                console.log(response);
+                checkNodeNState(response.State, nodeUrl);
             },
             error: function(response) {
                 console.log("error");
@@ -257,4 +303,37 @@ function nodeChangeState(inputStatus, nodeurl) {
             console.log("error");
         }
     });
+}
+
+
+function Conveter_LnodeState2Bit(inputStatus) {
+    switch (inputStatus) {
+        case "0":
+            return ["0", "0", "0"]
+            break;
+        case "1":
+            return ["0", "0", "1"]
+            break;
+        case "2":
+            return ["0", "1", "0"]
+            break;
+        case "3":
+            return ["0", "1", "1"]
+            break;
+        case "4":
+            return ["1", "0", "0"]
+            break;
+        case "5":
+            return ["1", "0", "1"]
+            break;
+        case "6":
+            return ["1", "1", "0"]
+            break;
+        case "7":
+            return ["1", "1", "1"]
+            break;
+        default:
+            return ["error"]
+    }
+
 }
