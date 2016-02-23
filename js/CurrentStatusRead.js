@@ -7,61 +7,62 @@ var statdata = [
     ["3", "微波爐", "客廳", "1", "80"]
 ];
 
-var yearstatdata =
-    {
-        "Interval": "year",
-        "data": [
-            [
-                1451606400000,
-                546.1997456666667
-            ],
-            [
-                1454284800000,
-                511.04232675396827
-            ],
-            [
-                1456790400000,
-                0
-                ]
-            // ],
-            // [
-            //     1459468800000,
-            //     0
-            // ],
-            // [
-            //     1462060800,
-            //     0
-            // ],
-            // [
-            //     1464739200,
-            //     0
-            // ],
-            // [
-            //     1467331200,
-            //     0
-            // ],
-            // [
-            //     1470009600,
-            //     0
-            // ],
-            // [
-            //     1472688000,
-            //     0
-            // ],
-            // [
-            //     1475280000,
-            //     0
-            // ],
-            // [
-            //     1477958400,
-            //     0
-            // ],
-            // [
-            //     1480550400,
-            //     100
-            // ]
+var yearstatdata = {
+    "Interval": "year",
+    "data": [
+        [
+            1451606400000,
+            546.199
+        ],
+        [
+            1454284800000,
+            511.042
+        ],
+        [
+            1456790400000,
+            541.042
+
+        ],
+        [
+            1459468800000,
+            546.199
+        ],
+        [
+            1462060800000,
+            746.199
+        ],
+        [
+            1464739200000,
+            786.199
+        ],
+        [
+            1467331200000,
+            806.199
+        ],
+        [
+            1470009600000,
+            846.199
+        ],
+        [
+            1472688000000,
+            646.199
+        ],
+        [
+            1475280000000,
+            576.199
+        ],
+        [
+            1477958400000,
+            546.199
+        ],
+        [
+            1480550400000,
+            100
         ]
-    };
+    ]
+};
+
+
 
 $(document).ready(function() {
     console.log("document ready");
@@ -70,141 +71,147 @@ $(document).ready(function() {
         url: statUrl,
         dataType: "json",
         success: function(response) {
-            responseJson = response;
-            console.log(responseJson);
+            console.log(response);
         },
         error: function(response) {
             console.log("error");
         }
     });
 
-    showdata();
+    showMonthdata();
     showYeardata();
+    showDaydata() ;
 });
 
 
+function showDaydata() {
 
-function showdata() {
-
-    var barOptions = {
-        series: {
-            bars: {
-                show: true,
-                barWidth: 43200000
-            }
-        },
-        xaxis: {
-            mode: "time",
-            timeformat: "%m/%d",
-            minTickSize: [1, "year"]
-        },
-        grid: {
-            hoverable: true
-        },
-        legend: {
-            show: false
-        },
-        tooltip: true,
-        tooltipOpts: {
-            content: "x: %x, y: %y"
+     var barOptions = {
+    series: {
+        bars: {
+            show: true,
+            barWidth: 1232000000
         }
-    };
+    },
+    xaxis: {
+        mode: "time",
+        timeformat: "%m/%d",
+        minTickSize: [1, "hour"]
+    },
+    yaxis: {
+        axisLabel: "平均電費",
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'Verdana, Arial',
+        axisLabelPadding: 2,
+        tickFormatter: function(v, axis) {
+            return "$" + v;
+        }
+    },
+    grid: {
+        hoverable: true
+    },
+    legend: {
+        show: false
+    },
+    tooltip: true,
+    tooltipOpts: {
+        content: "x: %x, y: %y"
+    }
+};
     var barData = {
         label: "bar",
-        // data: [
-        //     [1355000000000, 1000],
-        //     [1355040000000, 2000],
-        //     [1355223600000, 3000],
-        //     [1355306400000, 4000],
-        //     [1355487300000, 5000],
-        //     [1355571900000, 6000]
-        // ]
-
-       data: yearstatdata.data
+        color: "#ff0000",
+        data: yearstatdata.data
     };
 
-
-    $.plot($("#Month-bar-chart"), [barData], barOptions);
     $.plot($("#Day-bar-chart"), [barData], barOptions);
 
 }
 
-function showYeardata() {
-    var ticks = [
-        [1, "London"],
-        [2, "New York"],
-        [3, "New Delhi"],
-        [4, "Taipei"],
-        [5, "Beijing"],
-        [6, "London"],
-        [7, "New York"],
-        [8, "New Delhi"],
-        [9, "Taipei"],
-        [10, "Beijing"],
-        [11, "Beijing"],
-        [12, "Beijing"],
-        // [5, "Sydney"]
-        //         [, "London"],
-        // [1, "New York"],
-        // [2, "New Delhi"],
-        // [3, "Taipei"],
-        // [4, "Beijing"],
-        // [5, "Sydney"]
-    ];
+function showMonthdata() {
 
-    var barOptions = {
-        series: {
-            bars: {
-                show: true,
-                barWidth: 0.5
-            }
-        },
-        xaxis: {
-            axisLabel: "World Cities",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Verdana, Arial',
-            axisLabelPadding: 10,
-            ticks: ticks
-        },
-        yaxis: {
-            axisLabel: "Average Temperature",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Verdana, Arial',
-            axisLabelPadding: 3,
-            tickFormatter: function(v, axis) {
-                return v + "°C";
-            }
-        },
-        grid: {
-            hoverable: true
-        },
-        legend: {
-            show: false
-        },
-        tooltip: true,
-        tooltipOpts: {
-            content: "x: %x, y: %y"
+     var barOptions = {
+    series: {
+        bars: {
+            show: true,
+            barWidth: 1232000000
         }
-    };
+    },
+    xaxis: {
+        mode: "time",
+        timeformat: "%m/%d",
+        minTickSize: [1, "day"]
+    },
+    yaxis: {
+        axisLabel: "平均電費",
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'Verdana, Arial',
+        axisLabelPadding: 2,
+        tickFormatter: function(v, axis) {
+            return "$" + v;
+        }
+    },
+    grid: {
+        hoverable: true
+    },
+    legend: {
+        show: false
+    },
+    tooltip: true,
+    tooltipOpts: {
+        content: "x: %x, y: %y"
+    }
+};
     var barData = {
         label: "bar",
-        data: [
+        color: "#40ff00",
+        data: yearstatdata.data
+    };
 
-            [1, 1000],
-            [2, 2000],
-            [3, 3000],
-            [4, 4000],
-            [5, 5000],
-            [6, 500],
-            [7, 1000],
-            [8, 2000],
-            [9, 3000],
-            [10, 4000],
-            [11, 5000]
-            [12, 5000]
-        ]
+    $.plot($("#Month-bar-chart"), [barData], barOptions);
+
+}
+
+function showYeardata() {
+    var barOptions = {
+    series: {
+        bars: {
+            show: true,
+            barWidth: 1232000000
+        }
+    },
+    xaxis: {
+        mode: "time",
+        timeformat: "%m/%d",
+        minTickSize: [1, "day"]
+    },
+    yaxis: {
+        axisLabel: "平均電費",
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'Verdana, Arial',
+        axisLabelPadding: 2,
+        tickFormatter: function(v, axis) {
+            return "$" + v;
+        }
+    },
+    grid: {
+        hoverable: true
+    },
+    legend: {
+        show: false
+    },
+    tooltip: true,
+    tooltipOpts: {
+        content: "x: %x, y: %y"
+    }
+};
+    var barData = {
+        label: "bar",
+        color: "#0000ff",
+        data: yearstatdata.data
     };
     $.plot($("#Year-bar-chart"), [barData], barOptions);
 
