@@ -4,17 +4,23 @@ var responseJson = [];
 var Obj_Nnode = {
     DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["1", "2", "3"],
-    State: ["0", "0", "0"]
+    State: ["0", "0", "0"],
+    Url: ["123"]
+
 }
 
 var Obj_Lnode = {
-    DOMList: [[$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')]],
+    DOMList: [
+        [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')]
+    ],
     ID: ["7"],
-    State: [["0", "0", "1"]]
+    State: [
+        ["0", "0", "1"]
+    ]
 }
 
 var Obj_IRnode = {
-    DOMList: [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')],
+    DOMList: [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')],
     ID: ["9"]
 }
 
@@ -26,128 +32,73 @@ var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 $(document).ready(function() {
     console.log("document ready");
-    // 按下按鍵，REST GET要資料，檢查開關狀態
-    // var nodeUrL = nodeUrlBase + NnodeID[0] + "/";
-    // console.log(nodeUrL);
-    // $.ajax({
-    //     url: nodeUrL,
-    //     dataType: "json",
-    //     success: function(response) {
-    //         responseJson = response;
-    //         console.log(responseJson);
-    //         if (responseJson.State == "0"){
-    //             Nnodelist[0].bootstrapToggle('off')
-    //         }else{
-    //             Nnodelist[0].bootstrapToggle('on')
-    //         }
-
-    //     },
-    //     error: function(response) {
-    //         console.log("error");
-    //     }
-    // });
 
     // 一次得到所有狀態的resufl
-    for (var i = 0; i < Obj_Nnode.ID.length; i++) {
-        var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-        console.log(nodeUrL);
-        $.ajax({
-            url: nodeUrL,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                var index = Obj_Nnode.ID.indexOf(response.ID.toString());
-                Obj_Nnode.State[index] = response.State.toString();
+    // 獲得目前開關所有的狀態
+    get_NodeBtnStatus();
 
-                if (Obj_Nnode.State[index].toString() == "0") {
-                    Obj_Nnode.DOMList[index].bootstrapToggle('off');
+    // 使用者控制開關
+    // post_NodeBtnStatus();
+
+    $.each(Obj_Nnode.ID, function(i) {
+        // console.log(i);
+        Obj_Nnode.DOMList[i].change(function(event) {
+
+            var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
+            // console.log(NnodeUrl);
+            if ($(this).prop("checked") == true) {
+                Obj_Nnode.State[i] = "1";
+            } else {
+                Obj_Nnode.State[i] = "0";
+            }
+            // console.log(Obj_Nnode.State[i]);
+            checkNodeNState(Obj_Nnode.State[i], nodeUrl);
+
+        });
+    });
+
+    $.each(Obj_Lnode.ID, function(i) {
+        // console.log(i);
+        $.each(Obj_Lnode.DOMList[i], function(j) {
+            Obj_Lnode.DOMList[i][j].change(function(event) {
+                var nodeUrl = nodeUrlBase + Obj_Lnode.ID[i] + "/";
+
+                if ($(this).prop("checked") == true) {
+                    Obj_Lnode.State[i][j] = "1";
                 } else {
-                    Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                    Obj_Lnode.State[i][j] = "0";
                 }
-            },
-            error: function(response) {
-                console.log("error");
-            }
+                // console.log(Obj_Nnode.State[i]);
+                checkNodeLState(Obj_Lnode.State[i], nodeUrl);
+            });
         });
-    }
 
-
-    for (var i = 0; i < Obj_Lnode.ID.length; i++) {
-        var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
-        console.log(nodeUrL);
-        $.ajax({
-            url: nodeUrL,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-
-                var index = Obj_Lnode.ID.indexOf(response.ID.toString());
-                Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
-                // console.log(index);
-                // console.log(Obj_Lnode.State[index]);
-                 for (var i = 0; i < Obj_Lnode.State.length; i++)
-                if (Obj_Lnode.State[index][i].toString() == "0") {
-                    Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
-                } else {
-                    Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                }
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    }
-
-    //
-
-
-
-    $('#btnMainLight').click(function(event) {
-        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/1/";
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                checkNodeNState(response.State, nodeUrl);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
     });
+    // for (var i = 0; i < Obj_Nnode.ID.length; i++) {
+    //     Obj_Nnode.DOMList[i].change(function(event) {
+    //         var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
+    //         // console.log(NnodeUrl);
+    //         if ($(this).prop("checked") == true) {
+    //             Obj_Nnode.State[i] = "1";
+    //         } else {
+    //             Obj_Nnode.State[i] = "0";
+    //         }
+    //         console.log(Obj_Nnode.State[i]);
+    //         checkNodeNState(Obj_Nnode.State[i], Obj_Nnode.Url[i]);
 
-    $('#btnWallLight').click(function() {
-        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/2/";
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeNState(responseJson.State, nodeUrl);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
+    //     });
+    // }
+    // Obj_Nnode.DOMList[0].change(function(event) {
+    //     var nodeUrl = nodeUrlBase + Obj_Nnode.ID[0] + "/";
+    //     if ($(this).prop("checked") == true){
+    //         Obj_Nnode.State[0] = "1";
+    //     }
+    //     else{
+    //         Obj_Nnode.State[0] = "0";
+    //     }
+    //     checkNodeNState(Obj_Nnode.State[0], Obj_Nnode.Url[0]);
 
-    $('#btnFan').click(function() {
-        var nodeUrl = "http://192.168.31.245:8000/api/V1/node/3/";
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeNState(responseJson.State, nodeUrl);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
+    // });
 
     // 按下按鍵，REST GET要資料，檢查開關狀態
     // N type
@@ -215,6 +166,64 @@ $(document).ready(function() {
 
 });
 
+function get_NodeBtnStatus() {
+
+    // 0223 change status bug
+    // check N node status
+    for (var i = 0; i < Obj_Nnode.ID.length; i++) {
+        var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
+        console.log(nodeUrL);
+        $.ajax({
+            url: nodeUrL,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+                var index = Obj_Nnode.ID.indexOf(response.ID.toString());
+                Obj_Nnode.State[index] = response.State.toString();
+
+                if (Obj_Nnode.State[index].toString() == "0") {
+                    Obj_Nnode.DOMList[index].bootstrapToggle('off');
+                } else {
+                    Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                }
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    }
+
+    // check L node status
+    for (var i = 0; i < Obj_Lnode.ID.length; i++) {
+        var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
+        console.log(nodeUrL);
+
+        $.ajax({
+            url: nodeUrL,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+
+                var index = Obj_Lnode.ID.indexOf(response.ID.toString());
+                Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
+                // console.log(index);
+                console.log(Obj_Lnode.State[index]);
+                for (var i in Obj_Lnode.DOMList[index]) {
+                    if (Obj_Lnode.State[index][i].toString() == "0") {
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
+                    } else {
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
+                    }
+                }
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    }
+}
+
+
 // no use
 function getNodeState(nodeurl) {
 
@@ -236,10 +245,10 @@ function checkNodeNState(State, nodeUrl) {
     var open = '{"State": 1}';
     var close = '{"State": 0}';
     // ON status --> close
-    if (State == 1) {
-        nodeChangeState(close, nodeUrl)
-    } else {
+    if (State == "1") {
         nodeChangeState(open, nodeUrl)
+    } else {
+        nodeChangeState(close, nodeUrl)
     }
 
 }
@@ -335,5 +344,16 @@ function Conveter_LnodeState2Bit(inputStatus) {
         default:
             return ["error"]
     }
+
+}
+
+function Conveter_LnodeBit2State(inputStrArray) {
+    var tempvalue = 0;
+    var tempint = 0;
+    for (var i in inputStrArray){
+        tempint = parseInt(inputStrArray(i));
+        tempvalue = 2^(2-tempint)
+    }
+   
 
 }
