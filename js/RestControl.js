@@ -4,9 +4,7 @@ var responseJson = [];
 var Obj_Nnode = {
     DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["1", "2", "3"],
-    State: ["0", "0", "0"],
-    Url: ["123"]
-
+    State: ["0", "0", "0"]
 }
 
 var Obj_Lnode = {
@@ -20,14 +18,13 @@ var Obj_Lnode = {
 }
 
 var Obj_IRnode = {
-    DOMList: [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')],
-    ID: ["9"]
+    DOMList: [$('#btnTVON'), $('#btnTVMute'), $('#btnTVUP')],
+    ID: ["9"],
+     State: [
+        ["ON", "Mute", "UP"]
+    ]
 }
 
-// var Nnodelist = [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')];
-// var Lnodelist = [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain1')];
-// var NnodeID = ["1", "2", "3"];
-// var LnodeID = ["7"];
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 $(document).ready(function() {
@@ -39,7 +36,7 @@ $(document).ready(function() {
 
     // 使用者控制開關
     // post_NodeBtnStatus();
-
+    // N node
     $.each(Obj_Nnode.ID, function(i) {
         // console.log(i);
         Obj_Nnode.DOMList[i].change(function(event) {
@@ -56,7 +53,7 @@ $(document).ready(function() {
 
         });
     });
-
+    // L node
     $.each(Obj_Lnode.ID, function(i) {
         // console.log(i);
         $.each(Obj_Lnode.DOMList[i], function(j) {
@@ -68,101 +65,40 @@ $(document).ready(function() {
                 } else {
                     Obj_Lnode.State[i][j] = "0";
                 }
-                // console.log(Obj_Nnode.State[i]);
-                checkNodeLState(Obj_Lnode.State[i], nodeUrl);
+                // console.log(Obj_Lnode.State[i]);
+                var LnoseSTATE = "";
+                LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
+                checkNodeLState(LnoseSTATE, nodeUrl);
             });
         });
 
     });
-    // for (var i = 0; i < Obj_Nnode.ID.length; i++) {
-    //     Obj_Nnode.DOMList[i].change(function(event) {
-    //         var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-    //         // console.log(NnodeUrl);
-    //         if ($(this).prop("checked") == true) {
-    //             Obj_Nnode.State[i] = "1";
-    //         } else {
-    //             Obj_Nnode.State[i] = "0";
-    //         }
-    //         console.log(Obj_Nnode.State[i]);
-    //         checkNodeNState(Obj_Nnode.State[i], Obj_Nnode.Url[i]);
+    // IR node
+    $.each(Obj_IRnode.ID, function(i) {
+        // console.log(i);
+        Obj_IRnode.DOMList[i].click(function(event) {
 
-    //     });
-    // }
-    // Obj_Nnode.DOMList[0].change(function(event) {
-    //     var nodeUrl = nodeUrlBase + Obj_Nnode.ID[0] + "/";
-    //     if ($(this).prop("checked") == true){
-    //         Obj_Nnode.State[0] = "1";
-    //     }
-    //     else{
-    //         Obj_Nnode.State[0] = "0";
-    //     }
-    //     checkNodeNState(Obj_Nnode.State[0], Obj_Nnode.Url[0]);
+            var nodeUrl = nodeUrlBase + Obj_IRnode.ID[i] + "/";
 
+            // console.log(Obj_IRnode.State[i]);
+            checkNodeNState(Obj_IRnode.State[i], nodeUrl);
+
+        });
+    });
+
+    // // IR
+    // $('#btnTVON').click(function() {
+    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
+    //     checkNodeIRState("ON", nodeUrl)
     // });
-
-    // 按下按鍵，REST GET要資料，檢查開關狀態
-    // N type
-    $('#btnCurtain1').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeLState(responseJson.State, nodeUrl, 1);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
-
-    $('#btnCurtain2').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeLState(responseJson.State, nodeUrl, 2);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
-
-    $('#btnCurtain3').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeLState(responseJson.State, nodeUrl, 3);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
-
-    // IR
-    $('#btnTVON').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-        checkNodeIRState("ON", nodeUrl)
-    });
-    $('#btnTVMute').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-        checkNodeIRState("Mute", nodeUrl)
-    });
-    $('#btnTVUP').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-        checkNodeIRState("UP", nodeUrl)
-    });
+    // $('#btnTVMute').click(function() {
+    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
+    //     checkNodeIRState("Mute", nodeUrl)
+    // });
+    // $('#btnTVUP').click(function() {
+    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
+    //     checkNodeIRState("UP", nodeUrl)
+    // });
 
 });
 
@@ -253,34 +189,10 @@ function checkNodeNState(State, nodeUrl) {
 
 }
 
-function checkNodeLState(State, nodeUrl, nodeOrder) {
-    // chech data
-    State = parseInt(State);
-    if (nodeOrder == 3) {
-        // node 3 = HIGH 1XX
-        if (State > 3) {
-            State = State - 4;
-        } else {
-            State = State + 4;
-        }
-    } else if (nodeOrder == 2) {
-        if (State == 2 || State == 3 || State == 6 || State == 7) {
-            State = State - 2;
-        } else {
-            State = State + 2;
-        }
-    } else {
-        if (State == 1 || State == 3 || State == 5 || State == 7) {
-            State = State - 1;
-        } else {
-            State = State + 1;
-        }
-    }
-    State = State.toString();
+function checkNodeLState(State, nodeUrl) {
 
     var sendStatus = '{"State": ';
     sendStatus = sendStatus + State + '}';
-
     console.log(sendStatus);
     // ON status --> close
     nodeChangeState(sendStatus, nodeUrl)
@@ -290,7 +202,7 @@ function checkNodeIRState(State, nodeUrl) {
     var sendStatus = '{"State": "';
     sendStatus = sendStatus + State + '"}';
 
-    console.log(sendStatus);
+    // console.log(sendStatus);
     // ON status --> close
     nodeChangeState(sendStatus, nodeUrl)
 
@@ -348,12 +260,20 @@ function Conveter_LnodeState2Bit(inputStatus) {
 }
 
 function Conveter_LnodeBit2State(inputStrArray) {
-    var tempvalue = 0;
-    var tempint = 0;
-    for (var i in inputStrArray){
-        tempint = parseInt(inputStrArray(i));
-        tempvalue = 2^(2-tempint)
+    var tempint = [];
+    var total = 0;
+    for (var i in inputStrArray) {
+        tempint[i] = parseInt(inputStrArray[i]);
     }
-   
+    if (tempint[0] == 1) {
+        total += 4;
+    }
+    if (tempint[1] == 1) {
+        total += 2;
+    }
+    if (tempint[2] == 1) {
+        total += 1;
+    }
+    return total.toString();
 
 }
