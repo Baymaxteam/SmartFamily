@@ -1,7 +1,11 @@
 //Flot Line Chart
 
-var statUrl = "http://192.168.31.215:8000/api/bill/house/month/"
-var statdata = [
+var statYearUrl = "http://192.168.31.215:8000/api/V1/bill/house/year/";
+var statMonthUrl = "http://192.168.31.215:8000/api/V1/bill/house/month/";
+var statDayUrl = "http://192.168.31.215:8000/api/V1/bill/house/day/";
+var statNodeUrl = "http://192.168.31.215:8000/api/V1/bill/house/node/";
+
+var statNodedata = [
     ["1", "台燈", "客廳", "0", "10"],
     ["2", "電風扇", "客廳", "1", "5"],
     ["3", "微波爐", "客廳", "1", "80"]
@@ -62,63 +66,83 @@ var yearstatdata = {
     ]
 };
 
-
-
 $(document).ready(function() {
     console.log("document ready");
 
-    $.ajax({
-        url: statUrl,
-        dataType: "json",
-        success: function(response) {
-            console.log(response);
-        },
-        error: function(response) {
-            console.log("error");
-        }
-    });
+    // $.ajax({
+    //     url: statUrl,
+    //     dataType: "json",
+    //     success: function(response) {
+    //         console.log(response);
+    //     },
+    //     error: function(response) {
+    //         console.log("error");
+    //     }
+    // });
 
     showMonthdata();
     showYeardata();
-    showDaydata() ;
+    showDaydata();
+    showNodedata();
 });
 
+function showNodedata() {
+    $('#tableNodeStatus').DataTable({
+        bFilter: false,
+        paging: false,
+        responsive: true,
+        destroy: true,
+        data: statNodedata,
+
+        columns: [{
+            title: "ID"
+        }, {
+            title: "應用"
+        }, {
+            title: "位置"
+        }, {
+            title: "狀態"
+        }, {
+            title: "預估電費NTD(本日)"
+        }]
+    });
+}
 
 function showDaydata() {
 
-     var barOptions = {
-    series: {
-        bars: {
-            show: true,
-            barWidth: 1232000000
+    var barOptions = {
+        series: {
+            bars: {
+                show: true,
+                barWidth: 1232000000
+            }
+        },
+        xaxis: {
+            mode: "time",
+            timeformat: "%m/%d",
+            minTickSize: [1, "hour"]
+        },
+        yaxis: {
+            axisLabel: "平均電費",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 2,
+            tickFormatter: function(v, axis) {
+                return "$" + v;
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        legend: {
+            show: false
+        },
+        tooltip: true,
+        tooltipOpts: {
+            content: "x: %x, y: %y"
         }
-    },
-    xaxis: {
-        mode: "time",
-        timeformat: "%m/%d",
-        minTickSize: [1, "hour"]
-    },
-    yaxis: {
-        axisLabel: "平均電費",
-        axisLabelUseCanvas: true,
-        axisLabelFontSizePixels: 12,
-        axisLabelFontFamily: 'Verdana, Arial',
-        axisLabelPadding: 2,
-        tickFormatter: function(v, axis) {
-            return "$" + v;
-        }
-    },
-    grid: {
-        hoverable: true
-    },
-    legend: {
-        show: false
-    },
-    tooltip: true,
-    tooltipOpts: {
-        content: "x: %x, y: %y"
-    }
-};
+    };
     var barData = {
         label: "bar",
         color: "#ff0000",
@@ -131,39 +155,39 @@ function showDaydata() {
 
 function showMonthdata() {
 
-     var barOptions = {
-    series: {
-        bars: {
-            show: true,
-            barWidth: 1232000000
+    var barOptions = {
+        series: {
+            bars: {
+                show: true,
+                barWidth: 1232000000
+            }
+        },
+        xaxis: {
+            mode: "time",
+            timeformat: "%m/%d",
+            minTickSize: [1, "day"]
+        },
+        yaxis: {
+            axisLabel: "平均電費",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 2,
+            tickFormatter: function(v, axis) {
+                return "$" + v;
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        legend: {
+            show: false
+        },
+        tooltip: true,
+        tooltipOpts: {
+            content: "x: %x, y: %y"
         }
-    },
-    xaxis: {
-        mode: "time",
-        timeformat: "%m/%d",
-        minTickSize: [1, "day"]
-    },
-    yaxis: {
-        axisLabel: "平均電費",
-        axisLabelUseCanvas: true,
-        axisLabelFontSizePixels: 12,
-        axisLabelFontFamily: 'Verdana, Arial',
-        axisLabelPadding: 2,
-        tickFormatter: function(v, axis) {
-            return "$" + v;
-        }
-    },
-    grid: {
-        hoverable: true
-    },
-    legend: {
-        show: false
-    },
-    tooltip: true,
-    tooltipOpts: {
-        content: "x: %x, y: %y"
-    }
-};
+    };
     var barData = {
         label: "bar",
         color: "#40ff00",
@@ -176,38 +200,38 @@ function showMonthdata() {
 
 function showYeardata() {
     var barOptions = {
-    series: {
-        bars: {
-            show: true,
-            barWidth: 1232000000
+        series: {
+            bars: {
+                show: true,
+                barWidth: 1232000000
+            }
+        },
+        xaxis: {
+            mode: "time",
+            timeformat: "%m/%d",
+            minTickSize: [1, "day"]
+        },
+        yaxis: {
+            axisLabel: "平均電費",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 12,
+            axisLabelFontFamily: 'Verdana, Arial',
+            axisLabelPadding: 2,
+            tickFormatter: function(v, axis) {
+                return "$" + v;
+            }
+        },
+        grid: {
+            hoverable: true
+        },
+        legend: {
+            show: false
+        },
+        tooltip: true,
+        tooltipOpts: {
+            content: "x: %x, y: %y"
         }
-    },
-    xaxis: {
-        mode: "time",
-        timeformat: "%m/%d",
-        minTickSize: [1, "day"]
-    },
-    yaxis: {
-        axisLabel: "平均電費",
-        axisLabelUseCanvas: true,
-        axisLabelFontSizePixels: 12,
-        axisLabelFontFamily: 'Verdana, Arial',
-        axisLabelPadding: 2,
-        tickFormatter: function(v, axis) {
-            return "$" + v;
-        }
-    },
-    grid: {
-        hoverable: true
-    },
-    legend: {
-        show: false
-    },
-    tooltip: true,
-    tooltipOpts: {
-        content: "x: %x, y: %y"
-    }
-};
+    };
     var barData = {
         label: "bar",
         color: "#0000ff",
