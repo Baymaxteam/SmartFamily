@@ -20,7 +20,7 @@ var Obj_Lnode = {
 var Obj_IRnode = {
     DOMList: [$('#btnTVON'), $('#btnTVMute'), $('#btnTVUP')],
     ID: ["9"],
-     State: [
+    State: [
         ["ON", "Mute", "UP"]
     ]
 }
@@ -75,11 +75,8 @@ $(document).ready(function() {
     });
     // IR node
     $.each(Obj_IRnode.ID, function(i) {
-        // console.log(i);
         Obj_IRnode.DOMList[i].click(function(event) {
-
             var nodeUrl = nodeUrlBase + Obj_IRnode.ID[i] + "/";
-
             // console.log(Obj_IRnode.State[i]);
             checkNodeNState(Obj_IRnode.State[i], nodeUrl);
 

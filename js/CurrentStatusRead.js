@@ -1,7 +1,11 @@
 //Flot Line Chart
 
 var statUrl = "http://192.168.31.215:8000/api/bill/house/month/"
-
+var statdata = [
+    ["1", "台燈", "客廳", "0", "10" ],
+    ["2", "電風扇", "客廳", "1", "5" ],
+    ["3", "微波爐", "客廳", "1", "80" ]
+];
 
 $(document).ready(function() {
     console.log("document ready");
