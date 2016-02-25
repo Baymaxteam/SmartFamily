@@ -18,10 +18,20 @@ var Obj_Lnode = {
 }
 
 var Obj_IRnode = {
-    DOMList: [$('#btnTVON'), $('#btnTVMute'), $('#btnTVUP')],
+    DOMList: [
+        $('#btnTVON'), $('#btnMenu'), $('#btnTVEXIT'), $('#btnTVStop'),
+        $('#btnTVChannelUp'), $('#btnTVChannelDown'), $('#btnTVVoiceUp'), $('#btnTVVoiceDown'),
+        $('#btnTVMute'), $('#btnTV1'), $('#btnTV2'), $('#btnTV3'),
+        $('#btnTV4'), $('#btnTV5'), $('#btnTV6'), $('#btnTV7'),
+        $('#btnTV8'), $('#btnTV9'), $('#btnTVEnter')
+    ],
     ID: ["9"],
     State: [
-        ["ON", "Mute", "UP"]
+        "on", "mute", "UP", "Mute",
+        "up", "Mute", "UP", "Mute",
+        "mute", "Mute", "UP", "Mute",
+        "UP", "Mute", "UP", "Mute",
+        "UP", "Mute", "UP", "Mute"
     ]
 }
 
@@ -74,28 +84,14 @@ $(document).ready(function() {
 
     });
     // IR node
-    $.each(Obj_IRnode.ID, function(i) {
-        Obj_IRnode.DOMList[i].click(function(event) {
-            var nodeUrl = nodeUrlBase + Obj_IRnode.ID[i] + "/";
-            // console.log(Obj_IRnode.State[i]);
-            checkNodeNState(Obj_IRnode.State[i], nodeUrl);
 
+    $.each(Obj_IRnode.DOMList, function(i) {
+        Obj_IRnode.DOMList[i].click(function(event) {
+            var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
+            console.log(Obj_IRnode.State[i]);
+            checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
         });
     });
-
-    // // IR
-    // $('#btnTVON').click(function() {
-    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-    //     checkNodeIRState("ON", nodeUrl)
-    // });
-    // $('#btnTVMute').click(function() {
-    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-    //     checkNodeIRState("Mute", nodeUrl)
-    // });
-    // $('#btnTVUP').click(function() {
-    //     var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
-    //     checkNodeIRState("UP", nodeUrl)
-    // });
 
 });
 
@@ -190,7 +186,7 @@ function checkNodeLState(State, nodeUrl) {
 
     var sendStatus = '{"State": ';
     sendStatus = sendStatus + State + '}';
-    console.log(sendStatus);
+    // console.log(sendStatus);
     // ON status --> close
     nodeChangeState(sendStatus, nodeUrl)
 }
