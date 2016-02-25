@@ -23,15 +23,15 @@ var Obj_IRnode = {
         $('#btnTVChannelUp'), $('#btnTVChannelDown'), $('#btnTVVoiceUp'), $('#btnTVVoiceDown'),
         $('#btnTVMute'), $('#btnTV1'), $('#btnTV2'), $('#btnTV3'),
         $('#btnTV4'), $('#btnTV5'), $('#btnTV6'), $('#btnTV7'),
-        $('#btnTV8'), $('#btnTV9'), $('#btnTVEnter')
+        $('#btnTV8'), $('#btnTV9'), $('#btnTV0'),$('#btnTVEnter')
     ],
     ID: ["9"],
     State: [
-        "on", "mute", "UP", "Mute",
-        "up", "Mute", "UP", "Mute",
-        "mute", "Mute", "UP", "Mute",
-        "UP", "Mute", "UP", "Mute",
-        "UP", "Mute", "UP", "Mute"
+        "on", "menu", "exit", "stop",
+        "chup", "chdown", "voiceup", "voicedown",
+        "mute", "tv1", "tv2", "tv3",
+        "tv4", "tv5", "tv6", "tv7",
+        "tv8", "tv9", "UP", "Mute"
     ]
 }
 
