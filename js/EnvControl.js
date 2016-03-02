@@ -21,7 +21,7 @@ $(document).ready(function() {
             var EnvUrl = EnvUrlBase + Obj_EnvControl.EnvURL[i] + "/";
             // console.log(EnvUrl);
             post_EnvControl(Obj_EnvControl.Commend[i], EnvUrl);
-
+            console.log("sned");
         });
     });
 
