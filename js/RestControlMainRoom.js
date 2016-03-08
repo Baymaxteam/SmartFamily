@@ -268,7 +268,6 @@ function Conveter_LnodeBit2State(inputStrArray) {
 function get_NodeStatus() {
     // console.log("timer");
     get_NodeBtnStatus(false);
-
 }
 
 function abortTimer() { // to be called when you want to stop the timer
