@@ -352,3 +352,36 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+/*add LED*/
+/*body { padding: px; }*/
+.led {
+/*    margin: 3px;*/
+    width: 70px;
+    height: 35px;
+    border-radius: 10%;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+.led-red {
+    background-color: #F00;
+
+}
+.led-orange {
+    background-color: #FF7000;
+   
+}
+
+.led-yellow {
+    background-color: #FF0;
+ 
+}
+
+.led-green {
+    background-color: #80FF00;
+
+}
+
+.led-blue {
+    background-color: #06F;
+
+}

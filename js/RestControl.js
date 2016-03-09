@@ -45,13 +45,15 @@ var Obj_IRnode = {
         "mute", "tv1", "tv2", "tv3",
         "tv4", "tv5", "tv6", "tv7",
         "tv8", "tv9", "tv0", "tventer",
-        "language","display","scan","info",
-        "energy","boardcast" 
+        "language", "display", "scan", "info",
+        "energy", "boardcast"
     ]
 }
 
 
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
+
+
 
 $(document).ready(function() {
     console.log("document ready");
@@ -91,14 +93,14 @@ $(document).ready(function() {
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
 
-                } else if (($(this).prop("checked") != true) && (Obj_Lnode.State[i][j] == "1")) {
+                } else if ( ($(this).prop("checked") != true) && (Obj_Lnode.State[i][j] == "1") ) {
                     Obj_Lnode.State[i][j] = "0";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
                 } else {
 
                 }
-                 console.log(Obj_Lnode.State[i]);
+                console.log(Obj_Lnode.State[i]);
                 // var LnoseSTATE = "";
                 // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                 // checkNodeLState(LnoseSTATE, nodeUrl);
@@ -111,13 +113,29 @@ $(document).ready(function() {
     $.each(Obj_IRnode.DOMList, function(i) {
         Obj_IRnode.DOMList[i].click(function(event) {
             var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
-            console.log(Obj_IRnode.State[i]);
             checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
+            console.log(Obj_IRnode.State[i]);
         });
     });
 
+
+
     // 確認L節點得狀態
-    var timerticker = setInterval(get_NodeStatus, 4000);
+   
+    var timerticker = setInterval(timerFunciton(), 3000);
+    // $('#btnTimer').change(function(event) {
+    //     /* Act on the event */
+    //     if ($(this).prop("checked") == true){
+    //         timerticker = setInterval(get_NodeStatus(), 4000);
+    //         console.log("1");
+    //     }
+    //     else{
+    //         abortTimer();
+    //         console.log("0");
+    //     }
+    // });
+
+    
 
 });
 
@@ -155,6 +173,7 @@ function get_NodeBtnStatus(b_firstTimer) {
     for (var i = 0; i < Obj_Lnode.ID.length; i++) {
         var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
         console.log(nodeUrL);
+        var index = [];
 
         $.ajax({
             url: nodeUrL,
@@ -162,15 +181,14 @@ function get_NodeBtnStatus(b_firstTimer) {
             success: function(response) {
                 console.log(response);
 
-                var index = Obj_Lnode.ID.indexOf(response.ID.toString());
+                index = Obj_Lnode.ID.indexOf(response.ID.toString());
                 Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
-                // console.log(index);
-                console.log(Obj_Lnode.State[index]);
-                for (var i in Obj_Lnode.DOMList[index]) {
-                    console.log("index: " + index);
-                    console.log("here: " + i);
-                    if (Obj_Lnode.State[index][i].toString() == "0") {
+                console.log("L node Sate: " + Obj_Lnode.State[index]);
 
+                for (var i in Obj_Lnode.DOMList[index]) {
+                    // console.log("index: " + index);
+                    // console.log("here: " + i);
+                    if (Obj_Lnode.State[index][i].toString() == "0") {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
                         Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
@@ -178,6 +196,8 @@ function get_NodeBtnStatus(b_firstTimer) {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
                         Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
+                    } else {
+
                     }
 
                     // if ((Obj_Lnode.State[index][i].toString() == "0") && (Obj_Lnode.DOMList[index][i].prop('checked') == true)) {
@@ -306,7 +326,7 @@ function Conveter_LnodeBit2State(inputStrArray) {
 }
 
 
-function get_NodeStatus() {
+function timerFunciton() {
     // console.log("timer");
     get_NodeBtnStatus(false);
 
