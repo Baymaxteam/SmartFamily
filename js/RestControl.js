@@ -40,11 +40,11 @@ var Obj_IRnode = {
     ],
     ID: ["9"],
     State: [
-        "on", "menu", "exit", "stop",
+        "power", "menu", "back", "stop",
         "chup", "chdown", "voiceup", "voicedown",
         "mute", "tv1", "tv2", "tv3",
         "tv4", "tv5", "tv6", "tv7",
-        "tv8", "tv9", "tv0", "tventer",
+        "tv8", "tv9", "tv0", "enter",
         "language", "display", "scan", "info",
         "energy", "boardcast"
     ]
