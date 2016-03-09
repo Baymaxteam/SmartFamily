@@ -88,12 +88,12 @@ $(document).ready(function() {
                 var nodeUrl = nodeUrlBase + Obj_Lnode.ID[i] + "/";
                 var LnoseSTATE = "";
 
-                if (($(this).prop("checked") == true) && (Obj_Lnode.State[i][j] == "0")) {
+                if (($(this).prop("checked") == true) && (Obj_Lnode.State[i][j].toString() == "0")) {
                     Obj_Lnode.State[i][j] = "1";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
 
-                } else if ( ($(this).prop("checked") != true) && (Obj_Lnode.State[i][j] == "1") ) {
+                } else if (($(this).prop("checked") != true) && (Obj_Lnode.State[i][j].toString() == "1")) {
                     Obj_Lnode.State[i][j] = "0";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
@@ -121,8 +121,8 @@ $(document).ready(function() {
 
 
     // 確認L節點得狀態
-   
-    var timerticker = setInterval(timerFunciton(), 3000);
+
+    var timerticker = setInterval(timerFunciton, 3000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
@@ -135,7 +135,7 @@ $(document).ready(function() {
     //     }
     // });
 
-    
+
 
 });
 
@@ -301,7 +301,7 @@ function Conveter_LnodeState2Bit(inputStatus) {
             return ["1", "1", "1"]
             break;
         default:
-            return ["error"]
+            return ["L node input error"]
     }
 
 }
@@ -327,7 +327,7 @@ function Conveter_LnodeBit2State(inputStrArray) {
 
 
 function timerFunciton() {
-    // console.log("timer");
+    console.log("timer");
     get_NodeBtnStatus(false);
 
 }
