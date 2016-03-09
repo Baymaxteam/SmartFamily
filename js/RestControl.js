@@ -34,7 +34,9 @@ var Obj_IRnode = {
         $('#btnTVChannelUp'), $('#btnTVChannelDown'), $('#btnTVVoiceUp'), $('#btnTVVoiceDown'),
         $('#btnTVMute'), $('#btnTV1'), $('#btnTV2'), $('#btnTV3'),
         $('#btnTV4'), $('#btnTV5'), $('#btnTV6'), $('#btnTV7'),
-        $('#btnTV8'), $('#btnTV9'), $('#btnTV0'), $('#btnTVEnter')
+        $('#btnTV8'), $('#btnTV9'), $('#btnTV0'), $('#btnTVEnter'),
+        $('#btnTVLanguage'), $('#btnTVDisplay'), $('#btnTVScan'), $('#btnTVinfo'),
+        $('#btnTVEenergy'), $('#btnTVBoardcast')
     ],
     ID: ["9"],
     State: [
@@ -42,13 +44,11 @@ var Obj_IRnode = {
         "chup", "chdown", "voiceup", "voicedown",
         "mute", "tv1", "tv2", "tv3",
         "tv4", "tv5", "tv6", "tv7",
-        "tv8", "tv9", "tv0", "tventer"
+        "tv8", "tv9", "tv0", "tventer",
+        "language","display","scan","info",
+        "energy","boardcast" 
     ]
 }
-
-
-
-
 
 
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
@@ -98,7 +98,7 @@ $(document).ready(function() {
                 } else {
 
                 }
-                // console.log(Obj_Lnode.State[i]);
+                 console.log(Obj_Lnode.State[i]);
                 // var LnoseSTATE = "";
                 // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                 // checkNodeLState(LnoseSTATE, nodeUrl);
@@ -167,6 +167,8 @@ function get_NodeBtnStatus(b_firstTimer) {
                 // console.log(index);
                 console.log(Obj_Lnode.State[index]);
                 for (var i in Obj_Lnode.DOMList[index]) {
+                    console.log("index: " + index);
+                    console.log("here: " + i);
                     if (Obj_Lnode.State[index][i].toString() == "0") {
 
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
