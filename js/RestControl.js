@@ -1,11 +1,12 @@
 //Flot Line Chart
+
 var responseJson = [];
 
 var Obj_Nnode = {
     DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["1", "2", "3"],
     State: ["0", "0", "0"]
-}
+};
 
 var Obj_Lnode = {
     DOMList: [
@@ -15,7 +16,7 @@ var Obj_Lnode = {
     State: [
         ["0", "0", "1"]
     ]
-}
+};
 
 var Obj_Snode = {
     DOMList: [
@@ -26,7 +27,7 @@ var Obj_Snode = {
         ]
     ],
     ID: ["7"]
-}
+};
 
 var Obj_IRnode = {
     DOMList: [
@@ -48,12 +49,10 @@ var Obj_IRnode = {
         "language", "display", "scan", "info",
         "energy", "boardcast"
     ]
-}
+};
 
 
-var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
-
-
+var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/";
 
 $(document).ready(function() {
     console.log("document ready");
@@ -70,7 +69,7 @@ $(document).ready(function() {
 
             var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
             // console.log(NnodeUrl);
-            if ($(this).prop("checked") == true) {
+            if ($(this).prop("checked") === true) {
                 Obj_Nnode.State[i] = "1";
             } else {
                 Obj_Nnode.State[i] = "0";
@@ -88,12 +87,12 @@ $(document).ready(function() {
                 var nodeUrl = nodeUrlBase + Obj_Lnode.ID[i] + "/";
                 var LnoseSTATE = "";
 
-                if (($(this).prop("checked") == true) && (Obj_Lnode.State[i][j].toString() == "0")) {
+                if (($(this).prop("checked") === true) && (Obj_Lnode.State[i][j].toString() == "0")) {
                     Obj_Lnode.State[i][j] = "1";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
 
-                } else if (($(this).prop("checked") != true) && (Obj_Lnode.State[i][j].toString() == "1")) {
+                } else if (($(this).prop("checked") !== true) && (Obj_Lnode.State[i][j].toString() == "1")) {
                     Obj_Lnode.State[i][j] = "0";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
@@ -122,7 +121,7 @@ $(document).ready(function() {
 
     // 確認L節點得狀態
 
-    var timerticker = setInterval(timerFunciton, 3000);
+    setInterval(timerFunciton, 3000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
@@ -143,7 +142,7 @@ function get_NodeBtnStatus(b_firstTimer) {
 
     // 0223 change status bug
     // check N node status
-    if (b_firstTimer == true) {
+    if (b_firstTimer === true) {
         for (var i = 0; i < Obj_Nnode.ID.length; i++) {
             var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
             console.log(nodeUrL);
@@ -156,9 +155,9 @@ function get_NodeBtnStatus(b_firstTimer) {
                     Obj_Nnode.State[index] = response.State.toString();
 
                     if (Obj_Nnode.State[index].toString() == "0") {
-                        Obj_Nnode.DOMList[index].bootstrapToggle('off');
+                        Obj_Nnode.DOMList[index].bootstrapToggle("off");
                     } else {
-                        Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                        Obj_Nnode.DOMList[index].bootstrapToggle("on");
                     }
                 },
                 error: function(response) {
@@ -189,13 +188,13 @@ function get_NodeBtnStatus(b_firstTimer) {
                     // console.log("index: " + index);
                     // console.log("here: " + i);
                     if (Obj_Lnode.State[index][i].toString() == "0") {
-                        Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
-                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
-                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle("off");
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle("off");
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle("off");
                     } else if (Obj_Lnode.State[index][i].toString() == "1") {
-                        Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
-                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle("on");
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle("on");
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle("on");
                     } else {
 
                     }
@@ -229,9 +228,9 @@ function checkNodeNState(State, nodeUrl) {
     var close = '{"State": 0}';
     // ON status --> close
     if (State == "1") {
-        nodeChangeState(open, nodeUrl)
+        nodeChangeState(open, nodeUrl);
     } else {
-        nodeChangeState(close, nodeUrl)
+        nodeChangeState(close, nodeUrl);
     }
 
 }
@@ -242,7 +241,7 @@ function checkNodeLState(State, nodeUrl) {
     sendStatus = sendStatus + State + '}';
     // console.log(sendStatus);
     // ON status --> close
-    nodeChangeState(sendStatus, nodeUrl)
+    nodeChangeState(sendStatus, nodeUrl);
 }
 
 function checkNodeIRState(State, nodeUrl) {
@@ -251,7 +250,7 @@ function checkNodeIRState(State, nodeUrl) {
 
     // console.log(sendStatus);
     // ON status --> close
-    nodeChangeState(sendStatus, nodeUrl)
+    nodeChangeState(sendStatus, nodeUrl);
 
 }
 

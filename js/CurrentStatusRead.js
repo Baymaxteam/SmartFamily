@@ -358,8 +358,6 @@ function get_Daydata(nodeUrl) {
         }
     });
 
-
-
     function showDay(data) {
         var barOptions = {
             series: {
