@@ -1,11 +1,11 @@
 var gulp = require('gulp'),
+    webserver = require('gulp-webserver'),
     concat = require('gulp-concat'),
     minifyCSS = require('gulp-minify-css'),
     uglify = require('gulp-uglify'),
     rename = require("gulp-rename"),
-    webserver = require('gulp-webserver'),
     autoprefixer = require('gulp-autoprefixer'),
-    jshint = require('gulp-jshint'),
+    // jshint = require('gulp-jshint'),
     imagemin = require('gulp-imagemin'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
@@ -24,7 +24,7 @@ gulp.task('webserver', function() {
 });
 
 
-//	<!-- Bootstrap Core CSS -->
+//  <!-- Bootstrap Core CSS -->
 // <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 // <!-- MetisMenu CSS -->
 // <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
@@ -106,6 +106,6 @@ gulp.task('webserver', function() {
 //         .pipe(gulp.dest('build/js/'));
 // });
 
-gulp.task('default', 'webserver');
+gulp.task('default', ['webserver'] );
 //gulp.task('default', ['minify-css', 'webserver']);
 //

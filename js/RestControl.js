@@ -48,7 +48,8 @@ var Obj_IRnode = {
         "tv8", "tv9", "tv0", "enter",
         "language", "display", "scan", "info",
         "energy", "boardcast"
-    ]
+    ],
+    RecordMode: [false]
 };
 
 
@@ -59,6 +60,10 @@ $(document).ready(function() {
     // 一次得到所有狀態的resufl
     // 獲得目前開關所有的狀態
     get_NodeBtnStatus(true);
+
+    $('#btnIRTVRecord').bootstrapToggle("off");
+    // 對碼初始狀態為0
+
 
     // 使用者控制開關
     // post_NodeBtnStatus();
@@ -99,7 +104,7 @@ $(document).ready(function() {
                 } else {
 
                 }
-                console.log(Obj_Lnode.State[i]);
+                // console.log(Obj_Lnode.State[i]);
                 // var LnoseSTATE = "";
                 // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                 // checkNodeLState(LnoseSTATE, nodeUrl);
@@ -112,15 +117,25 @@ $(document).ready(function() {
     $.each(Obj_IRnode.DOMList, function(i) {
         Obj_IRnode.DOMList[i].click(function(event) {
             var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
-            checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
-            console.log(Obj_IRnode.State[i]);
+
+            if (Obj_IRnode.RecordMode === true) {
+                nodeUrl = nodeUrl + "IRset/" + Obj_IRnode.State[i] + "/";
+                console.log(nodeUrl);
+                $('#IRRecordModal').modal('show');
+                checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
+
+            } else {
+
+                checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
+                // console.log(Obj_IRnode.State[i]);
+            }
+
         });
     });
 
 
 
     // 確認L節點得狀態
-
     setInterval(timerFunciton, 3000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
@@ -134,6 +149,16 @@ $(document).ready(function() {
     //     }
     // });
 
+    // 對碼模式
+    $('#btnIRTVRecord').change(function(event) {
+        if ($(this).prop("checked") === true) {
+            Obj_IRnode.RecordMode = true;
+
+        } else {
+            Obj_IRnode.RecordMode = false;
+
+        }
+    });
 
 
 });
@@ -145,12 +170,12 @@ function get_NodeBtnStatus(b_firstTimer) {
     if (b_firstTimer === true) {
         for (var i = 0; i < Obj_Nnode.ID.length; i++) {
             var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-            console.log(nodeUrL);
+            // console.log(nodeUrL);
             $.ajax({
                 url: nodeUrL,
                 dataType: "json",
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     var index = Obj_Nnode.ID.indexOf(response.ID.toString());
                     Obj_Nnode.State[index] = response.State.toString();
 
@@ -171,18 +196,18 @@ function get_NodeBtnStatus(b_firstTimer) {
     // check L node status
     for (var i = 0; i < Obj_Lnode.ID.length; i++) {
         var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
-        console.log(nodeUrL);
+        // console.log(nodeUrL);
         var index = [];
 
         $.ajax({
             url: nodeUrL,
             dataType: "json",
             success: function(response) {
-                console.log(response);
+                // console.log(response);
 
                 index = Obj_Lnode.ID.indexOf(response.ID.toString());
                 Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
-                console.log("L node Sate: " + Obj_Lnode.State[index]);
+                // console.log("L node Sate: " + Obj_Lnode.State[index]);
 
                 for (var i in Obj_Lnode.DOMList[index]) {
                     // console.log("index: " + index);
@@ -326,7 +351,7 @@ function Conveter_LnodeBit2State(inputStrArray) {
 
 
 function timerFunciton() {
-    console.log("timer");
+    // console.log("timer");
     get_NodeBtnStatus(false);
 
 }
