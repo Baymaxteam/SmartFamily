@@ -145,6 +145,7 @@
                                                         <th>類型</th> -->
                                                         <th>應用</th>
                                                         <th>控制</th>
+                                                        <th>過載警報</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -155,6 +156,9 @@
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnMainLight">
                                                         </td>
+                                                         <td>
+                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnMainLightAlarm">
+                                                        </td>
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <!--  <td>1</td>
@@ -162,6 +166,9 @@
                                                         <td>電風扇</td>
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnWallLight">
+                                                        </td>
+                                                          <td>
+                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnWallLightAlarm">
                                                         </td>
                                                     </tr>
                                                     </tr>
@@ -172,6 +179,10 @@
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnFan">
                                                         </td>
+                                                           <td>
+                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnFanAlarm">
+                                                        </td>
+
                                                     </tr>
                                                     <tr class="even gradeC">
                                                         <!--    <td>1</td>
@@ -185,33 +196,11 @@
                                                             <label class="checkbox">
                                                                 <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnCurtain3"> 檯燈3</label>
                                                         </td>
-                                                    </tr>
-                                                    <tr class="odd gradeX">
-                                                        <!--  <td>1</td>
-                                                        <td>N</td> -->
-                                                        <td>床頭 開關檯燈</td>
-                                                        <td>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain11"> 檯燈1狀態</label>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain21"> 檯燈2狀態</label>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain31"> 檯燈3狀態</label>
+                                                            <td>
+                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnCurtainAlarm">
                                                         </td>
                                                     </tr>
-                                                    <tr class="odd gradeX">
-                                                        <!--  <td>1</td>
-                                                        <td>N</td> -->
-                                                        <td>門口 開關檯燈</td>
-                                                        <td>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain12"> 檯燈1狀態</label>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain22"> 檯燈2狀態</label>
-                                                            <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain32"> 檯燈3狀態</label>
-                                                        </td>
-                                                    </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -232,8 +221,7 @@
                                                     <h4 class="modal-title">對碼模式開啟</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>請點擊遙控器，進行紅外線對碼
-                                                        <br>等待3秒，確認是否測試成功</p>
+                                                    <p>請點擊遙控器，進行紅外線對碼<br>等待3秒，確認是否測試成功</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
@@ -366,7 +354,7 @@
                                 <div class="tab-pane fade" id="messages-pills">
                                     <h4>冷氣控制</h4>
                                     <label class="checkbox">正常模式 OFF
-                                        <input data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnIRTVRecord"> 對碼模式 ON</label>
+                                        <input data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnIRAirRecord"> 對碼模式 ON</label>
                                     <table class="table table-striped table-bordered table-hover" id="tableLivingControl">
                                         <thead>
                                             <tr>
@@ -442,8 +430,7 @@
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                </div>
-            </div>
+                </div>            </div>
         </div>
         <!-- /#page-wrapper -->
     </div>
