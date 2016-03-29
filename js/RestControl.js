@@ -81,13 +81,19 @@ $(document).ready(function() {
 
             var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
             // console.log(NnodeUrl);
-            if ($(this).prop("checked") === true) {
+            if ($(this).prop("checked") === true && (Obj_Nnode.State[i].toString() == "0")) {
                 Obj_Nnode.State[i] = "1";
-            } else {
+                checkNodeNState(Obj_Nnode.State[i], nodeUrl);
+
+
+            } else if ($(this).prop("checked") !== true && (Obj_Nnode.State[i].toString() == "1")){
                 Obj_Nnode.State[i] = "0";
+                checkNodeNState(Obj_Nnode.State[i], nodeUrl);
+            } else {
+                
             }
             // console.log(Obj_Nnode.State[i]);
-            checkNodeNState(Obj_Nnode.State[i], nodeUrl);
+            
 
         });
     });
