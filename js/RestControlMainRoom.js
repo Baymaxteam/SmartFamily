@@ -205,12 +205,15 @@ function get_NodeBtnStatus(b_firstTimer) {
                     Obj_Nnode.DOMList[index].bootstrapToggle("on");
                 }
 
-
-                // console.log(Obj_Nnode.Current[index]);
+                var LED = Obj_Nnode.AlarmDOMList[index];
+                // 電流狀態更新
                 if (Obj_Nnode.Current[index] <= 300) {
-                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("off");
+
+                    LED.removeClass("led-red");
+                    LED.addClass("led-green");
                 } else {
-                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("on");
+                    LED.removeClass("led-green");
+                    LED.addClass("led-red");
                 }
             },
             error: function(response) {
@@ -253,23 +256,16 @@ function get_NodeBtnStatus(b_firstTimer) {
                     } else {
 
                     }
-
-                    // if ((Obj_Lnode.State[index][i].toString() == "0") && (Obj_Lnode.DOMList[index][i].prop('checked') == true)) {
-
-                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
-                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
-                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
-                    // } else if ((Obj_Lnode.State[index][i].toString() == "1") && (Obj_Lnode.DOMList[index][i].prop('checked') != true)) {
-                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
-                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
-                    // }
                 }
 
+                var LED = Obj_Lnode.AlarmDOMList[index];
+                // 電流狀態更新
                 if (Obj_Lnode.Current[index] <= 300) {
-                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("off");
+                    LED.removeClass("led-red");
+                    LED.addClass("led-green");
                 } else {
-                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("on");
+                    LED.removeClass("led-green");
+                    LED.addClass("led-red");
                 }
 
             },
@@ -279,6 +275,7 @@ function get_NodeBtnStatus(b_firstTimer) {
         });
     }
 }
+
 
 
 // no use
