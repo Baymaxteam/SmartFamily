@@ -1,8 +1,8 @@
 //Flot Line Chart
 var responseJson = [];
 
-var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
-// var nodeUrlBase = "../api/V1/node/";
+// var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
+var nodeUrlBase = "../api/V1/node/";
 
 
 var Obj_Nnode = {
@@ -62,6 +62,8 @@ var Obj_IRnode = {
     ]
 }
 
+// 500 mA
+var alarmvalue = 0.5;
 
 $(document).ready(function() {
     console.log("document ready");
@@ -207,7 +209,7 @@ function get_NodeBtnStatus(b_firstTimer) {
 
                 var LED = Obj_Nnode.AlarmDOMList[index];
                 // 電流狀態更新
-                if (Obj_Nnode.Current[index] <= 300) {
+                if (Obj_Nnode.Current[index] <= alarmvalue) {
 
                     LED.removeClass("led-orange");
                     LED.addClass("led-green");
@@ -258,15 +260,15 @@ function get_NodeBtnStatus(b_firstTimer) {
                     }
                 }
 
-                var LED = Obj_Lnode.AlarmDOMList[index];
-                // 電流狀態更新
-                if (Obj_Lnode.Current[index] <= 300) {
-                    LED.removeClass("led-red");
-                    LED.addClass("led-green");
-                } else {
-                    LED.removeClass("led-green");
-                    LED.addClass("led-red");
-                }
+                // var LED = Obj_Lnode.AlarmDOMList[index];
+                // // 電流狀態更新
+                // if (Obj_Lnode.Current[index] <= alarmvalue) {
+                //     LED.removeClass("led-red");
+                //     LED.addClass("led-green");
+                // } else {
+                //     LED.removeClass("led-green");
+                //     LED.addClass("led-red");
+                // }
 
             },
             error: function(response) {

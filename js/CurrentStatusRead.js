@@ -1,10 +1,9 @@
 //Flot Line Chart
 
-var statYearUrl = "http://192.168.31.245:8000/api/V1/bill/house/year/";
-var statMonthUrl = "http://192.168.31.245:8000/api/V1/bill/house/month/";
-var statDayUrl = "http://192.168.31.245:8000/api/V1/bill/house/day/";
-var statNodeUrl = "http://192.168.31.245:8000/api/V1/bill/house/node/";
-
+var statYearUrl = "../api/V1/bill/house/year/";
+var statMonthUrl = "../api/V1/bill/house/month/";
+var statDayUrl = "../api/V1/bill/house/day/";
+var statNodeUrl = "../api/V1/bill/house/node/";
 
 var statNodeData = [
     ["1", "檯燈", "客廳", "1", "85"],
@@ -338,7 +337,7 @@ function get_AllNodeList(nodeUrl) {
             }, {
                 title: "狀態"
             }, {
-                title: "預估電費"
+                title: "即時耗電(A)"
             }]
         });
     }
@@ -357,6 +356,8 @@ function get_Daydata(nodeUrl) {
             console.log("error");
         }
     });
+
+
 
     function showDay(data) {
         var barOptions = {
